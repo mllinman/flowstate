@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { Clock, TrendingUp, Sparkles, ChevronRight } from 'lucide-react';
-import { TrackCard, AlbumCard, ArtistCard, PlaylistCard, AdBanner, TrackRow } from '@/components/Cards';
+import { AlbumCard, ArtistCard, PlaylistCard, AdBanner, TrackRow } from '@/components/Cards';
 import { albums, artists, playlists, allTracks, ads } from '@/lib/data';
+import { usePlayerStore } from '@/stores/playerStore';
 import Link from 'next/link';
 
 const fadeIn = {
@@ -138,7 +139,7 @@ export default function DashboardPage() {
 
 // Quick Play card — compact horizontal card
 function QuickPlayCard({ track }: { track: import('@/lib/data').Track }) {
-  const play = require('@/stores/playerStore').usePlayerStore.getState().play;
+  const play = usePlayerStore((s) => s.play);
 
   return (
     <div

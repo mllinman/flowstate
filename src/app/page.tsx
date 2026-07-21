@@ -25,6 +25,13 @@ const fadeUp = {
   }),
 };
 
+// Pre-computed waveform bar data (avoids Math.random during render)
+const WAVE_BARS = Array.from({ length: 40 }, (_, i) => ({
+  opacity: 0.3 + (((i * 7 + 3) % 10) / 10) * 0.7,
+  speed: 0.5 + (((i * 13 + 5) % 10) / 10) * 0.8,
+  height: 15 + (((i * 11 + 7) % 10) / 10) * 45,
+}));
+
 const features = [
   {
     icon: Headphones,

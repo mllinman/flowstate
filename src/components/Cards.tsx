@@ -3,7 +3,7 @@
 import { Play } from 'lucide-react';
 import { usePlayerStore } from '@/stores/playerStore';
 import type { Track, Album, Playlist, Artist } from '@/lib/data';
-import { formatNumber } from '@/lib/data';
+import { formatNumber, formatDuration } from '@/lib/data';
 import Link from 'next/link';
 
 // ---- Track Card (Album Art + Title) ----
