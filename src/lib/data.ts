@@ -149,6 +149,17 @@ export const artists: Artist[] = [
   },
 ];
 
+// Simple deterministic hash for consistent values between server and client
+function seedHash(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
 // Helper to build albums and tracks with circular references
 function buildAlbum(
   id: string,
@@ -173,17 +184,20 @@ function buildAlbum(
     tracks: [],
   };
 
-  album.tracks = trackNames.map((name, i) => ({
-    id: `${id}-track-${i + 1}`,
-    title: name,
-    artist,
-    album,
-    duration: 180 + Math.floor(Math.random() * 120), // 3-5 min
-    plays: Math.floor(Math.random() * 50000000),
-    audioUrl: `/audio/sample.mp3`,
-    explicit: Math.random() > 0.7,
-    trackNumber: i + 1,
-  }));
+  album.tracks = trackNames.map((name, i) => {
+    const seed = seedHash(`${id}-${name}-${i}`);
+    return {
+      id: `${id}-track-${i + 1}`,
+      title: name,
+      artist,
+      album,
+      duration: 180 + (seed % 120),
+      plays: (seed * 7 + i * 1234567) % 50000000,
+      audioUrl: `/audio/sample.mp3`,
+      explicit: (seed % 10) > 6,
+      trackNumber: i + 1,
+    };
+  });
 
   return album;
 }
